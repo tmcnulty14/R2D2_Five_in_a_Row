@@ -4,11 +4,6 @@
  * decisions about that data, and bundle board 
  * state to pass to the GameController.
  */
-package com.skilledmonster.examples.util.map;
-import java.util.Set;
-import org.apache.commons.collections.MultiMap;
-import org.apache.commons.collections.map.MultiValueMap;
-
 
 public class R2D2GameModel 
 {
