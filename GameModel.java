@@ -1,0 +1,28 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+/**
+ *
+ * @author mcnultyt
+ */
+public interface GameModel {
+    /**
+     * @param x The x coordinate of the target location.
+     * @param y The y coordinate of the target location.
+     * @param value The intended player value to set the target location to.
+     * @return True if this was a valid move and was accepted.
+     */
+    public boolean setMarker(int x, int y, int value);
+    
+    /**
+     * @return A Board object which represents the current board state.
+     */
+    public Board getBoard();
+    
+    /** 
+     * @return The current winner (1 or 2) or 0 if no winner yet.
+     */
+    public int checkStatus();
+}
