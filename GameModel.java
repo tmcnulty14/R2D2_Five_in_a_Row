@@ -15,5 +15,5 @@ public interface GameModel {
     /** 
      * @return The current winner (1 or 2) or 0 if no winner yet.
      */
-    public int checkStatus();
+    public int checkStatus(int x, int y);
 }

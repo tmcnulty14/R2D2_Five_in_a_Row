@@ -7,35 +7,271 @@
 
 public class R2D2GameModel 
 {
+}
+
+public class Board
+{	
+
+	// A 2D int array [xcoord.][ycoord.]
+	public static int[][] boardArray;
 	
-	// creates map for gamboard
-	public bool initializeBoard {
-		
-		int gridSize = 15;
-		int x = gridSize;
-		int y = gridSize;
-		MultiMap gameBoardMap = new MultiValueMap();
-		
-		while( x < 0 && y < 0)
+	// Resets boardArray to a 2D array all 0's - 15x15
+	public void newBoard() 
+	{
+		this.boardArray = new int[15][15];
+	} // end on newBoard()
+	
+	public boolean setMarker(int x, int y, int value)
+	{
+		int curVal = this.boardArray[x][y];	
+		if (curVal == 0)
 		{
-			String key = ""+x+"-"+y+"";
-			gameBoardMap.put(key, 0);
-			
-			y --;
-			
-			if ( y < 0)
+			//position unmarked - set marker!
+			this.boardArray[x][y] = value;
+			return true;
+		}
+		else
+		{	// Generate a specific error given issue with marker...
+			switch(curVal)
 			{
-				//reset y and decrease x
-				y = gridSize;
-				x--;
+			case 1:
+				if(value == 1){ 
+					System.out.println("You already placed a marker here!");
+					return false;
+				} else {
+					System.out.println("Your opponent already placed a marker here!");
+					return false;
+				}
+				break;
+				
+			case 2:
+				if(value == 2){ 
+					System.out.println("You already placed a marker here!");
+					return false;
+				} else {
+					System.out.println("Your opponent already placed a marker here!");
+					return false;
+				}
+				break;
+				
+			default: return false;
+				break;
+			} //end of switch
+		} //end of else
+	} // end of setMarker()
+	
+	public int checkStatus(int x, int y)
+	{
+		//give coordinates is start point of check, should be last marker set.
+		// matchVal is the value to be matched 5 in a row uses passed index value
+		int matchVal = this.boardArray[x][y];
+		// winner 0 = no winner, 1 = player one winner, 2 = player two winner
+		int winner = -1;
+		int vertCount = vertCheck(x, y, matchVal);
+		int diagCount = diagCheck(x, y, matchVal);
+		int horzCount = horzCheck(x, y, matchVal);
+		
+		if(vertCount >= 5 || diagCount >= 5 || horizCount >= 5)
+		{
+			return matchVal;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
+	
+/* Methods below used for checkStatus */
+	public int vertCheck(int x, int y, int matchVal)
+	{
+	    int count = 1; // one since matchVal is already a match
+		boolean flag = true;
+		int xCheck = x;
+		int yCheck = y;
+		
+		// check positive vertial values above starting point
+		while(flag)
+		{
+			if( this.boardArray[xCheck][yCheck] == matchVal){
+				count++;
+				yCheck--;
 			}
-			
+			else{
+				// match not found/not consecutive stop search!!
+				flag = false;
+			}
+			// Stop once checked all!
+			if(yCheck < 0 )
+				flag = false;
+		}
+		// reset variables
+		flag = true;
+		yCheck = y;
+		// check all negative vertical values below starting point
+		while(flag)
+		{
+			if( this.boardArray[xCheck][yCheck] == matchVal){
+				count++;
+				yCheck++;
+			}
+			else{
+				// match not found/not consecutive stop search!!
+				flagPos == false;
+			}
+			// OR  stop once checked all!
+			if(yCheck > 14 )
+				flagPos = false;
+		}
+		return count;
+	} // end of vertCheck
+	
+	
+	public int horzCheck(int x, int y, int matchVal)
+	{
+	    int count = 0; // one since matchVal is already a match
+		boolean flag = true;
+		int xCheck = x;
+		int yCheck = y;
+		
+		// check positive vertial values above starting point
+		while(flag)
+		{
+			if( this.boardArray[xCheck][yCheck] == matchVal){
+				count++;
+				xCheck--;
+			}
+			else{
+				// match not found/not consecutive stop search!!
+				flag = false;
+			}
+			// Stop once checked all!
+			if(yCheck < 0 )
+				flag = false;
+		}
+		// reset variables
+		flag = true;
+		xCheck = x;
+		// check all negative vertical values below starting point
+		while(flag)
+		{
+			if( this.boardArray[xCheck][yCheck] == matchVal){
+				count++;
+				xCheck++;
+			}
+			else{
+				// match not found/not consecutive stop search!!
+				flagPos == false;
+			}
+			// OR  stop once checked all!
+			if(xCheck > 14 )
+				flagPos = false;
+		}
+		return count;
+	} //end of horzCheck
+	
+	public int diagCheck(int x, int y, int matchVal)
+	{
+	    int count = 0; // one since matchVal is already a match
+		boolean flag = true;
+		int xCheck = x;
+		int yCheck = y;
+		
+		// check positive vertial right direction values above starting point
+		while(flag)
+		{
+			if( this.boardArray[xCheck][yCheck] == matchVal){
+				count++;
+				yCheck--;
+				xCheck++;
+			}
+			else{
+				// match not found/not consecutive stop search!!
+				flag = false;
+			}
+			// Stop once checked all!
+			if(yCheck < 0 || xCheck > 14 )
+				flag = false;
+		}
+		// reset variables
+		flag = true;
+		xCheck = x;
+		yCheck = y;
+		// check all negative vertical values below starting point
+		while(flag)
+		{
+			if( this.boardArray[xCheck][yCheck] == matchVal){
+				count++;
+				yCheck++;
+				xCheck--;
+			}
+			else{
+				// match not found/not consecutive stop search!!
+				flagPos == false;
+			}
+			// OR  stop once checked all!
+			if(xCheck < 0 || yCheck > 14 )
+				flagPos = false;
 		}
 		
-	}
+		if (count > 4){
+		return count;
+		} else {
+			//reset all variables for left diag direction!
+			flag = true;
+			yCheck = y;
+			xCheck = x;
+			counter = 0;
+		}
+	
+		// check positive vertial left direction values above starting point
+		while(flag)
+		{
+			if( this.boardArray[xCheck][yCheck] == matchVal){
+				count++;
+				yCheck--;
+				xCheck--;
+			}
+			else{
+				// match not found/not consecutive stop search!!
+				flag = false;
+			}
+			// Stop once checked all!
+			if(yCheck < 0 || xCheck < 0 )
+				flag = false;
+		}
+		// reset variables
+		flag = true;
+		xCheck = x;
+		yCheck = y;
+		// check all negative vertical values below starting point
+		while(flag)
+		{
+			if( this.boardArray[xCheck][yCheck] == matchVal){
+				count++;
+				yCheck++;
+				xCheck++;
+			}
+			else{
+				// match not found/not consecutive stop search!!
+				flagPos == false;
+			}
+			// OR  stop once checked all!
+			if(xCheck > 14 || yCheck > 14 )
+				flagPos = false;
+		}
+		return count;
+	} //end of diag check
+
+/* Methods above used for checkStatus */	
 	
 	
-	//Class called Board within we want:
+	
+	
+} //end of Board class
+	
+
+//Class called Board within we want:
 	//- getBoard - array
 	//- winner - 0, 1, 2
 	//- currentTurn 1, 2
@@ -68,4 +304,3 @@ public class R2D2GameModel
 	
 	
 	
-}
