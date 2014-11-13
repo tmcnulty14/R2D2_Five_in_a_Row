@@ -1,0 +1,29 @@
+/**
+ * A message containing information about a move (player, x, y).
+ * @author tmcnulty14
+ */
+public class MoveMessage implements Message {
+    private final int playerId;
+    
+    private final int moveX;
+    private final int moveY;
+    
+    public MoveMessage(int playerId, int x, int y) {
+        this.playerId = playerId;
+        this.moveX = x;
+        this.moveY = y;
+    }
+    
+    @Override
+    public int getSourceId() {
+        return playerId;
+    }
+    
+    public int getX() {
+        return moveX;
+    }
+    
+    public int getY() {
+        return moveY;
+    }
+}
