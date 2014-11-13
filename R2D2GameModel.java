@@ -5,7 +5,7 @@
  * state to pass to the GameController.
  */
 
-public class R2D2GameModel 
+public class R2D2GameModel implements GameModel
 {
 }
 
