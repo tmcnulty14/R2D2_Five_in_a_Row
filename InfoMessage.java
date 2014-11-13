@@ -3,6 +3,8 @@
  * @author tmcnulty14
  */
 public class InfoMessage implements Message {
+    private static final int PRIORITY = 3;
+    
     private final int activePlayer; // 0, 1, 2
     
     private final int winnerPlayer; // 0, 1, 2
@@ -48,5 +50,10 @@ public class InfoMessage implements Message {
      */
     public static InfoMessage newTurn(int activePlayer) {
         return new InfoMessage(activePlayer, 0);
+    }
+
+    @Override
+    public int getPriority() {
+        return PRIORITY;
     }
 }

@@ -3,6 +3,8 @@
  * @author tmcnulty14
  */
 public class MoveMessage implements Message {
+    private static final int PRIORITY = 2;
+    
     private final int playerId;
     
     private final int moveX;
@@ -25,5 +27,10 @@ public class MoveMessage implements Message {
     
     public int getY() {
         return moveY;
+    }
+
+    @Override
+    public int getPriority() {
+        return PRIORITY;
     }
 }
