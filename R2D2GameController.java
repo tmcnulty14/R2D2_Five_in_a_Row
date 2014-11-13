@@ -1,4 +1,3 @@
-
 import java.io.*;
 import java.net.*;
 
@@ -10,7 +9,7 @@ import java.net.*;
  */
 public class R2D2GameController implements GameController, Runnable {
     private final GameModel model;
-    private R2D2Connection[] clients = new R2D2Connection[2];
+    private final R2D2Connection[] clients = new R2D2Connection[2];
     private boolean doneTurn = false;
     
     /**
