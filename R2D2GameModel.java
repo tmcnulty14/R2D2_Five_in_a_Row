@@ -1,20 +1,15 @@
-/*
- * Team: R2 - D2
- * GameModel.java Store data, make simple logical 
- * decisions about that data, and bundle board 
- * state to pass to the GameController.
- */
 
 public class R2D2GameModel implements GameModel
 {
-	
-		// A 2D int array [xcoord.][ycoord.]
+		
 		private final int[][] boardArray = new int[15][15];
-		// A variable which holds winner/status used by check status holds player number 0 is no one
 		private int gameWinner = 0;
 		private int currentPlayer = 1; 
 		
+		
 		@Overide
+		/**
+		 * Sets marker in array return bool if valid move */
 		public boolean setMarker(int x, int y, int value)
 		{
 			int curVal = this.boardArray[x][y];	
@@ -26,23 +21,28 @@ public class R2D2GameModel implements GameModel
 				return true;
 			}
 			else
-			{	// return false marker already used!
+			{	// return false marker already used!!!
 				return false;
 			} 
 		} 
 		
 		@Overide
+		/**
+		 * Returns the game winner int */
 		public int checkStatus(){
 			return gameWinner;
 		}
 		
 		@Overide
+		/**
+		 * Return the current player number */
 		public int getActivePlayer(){
 			return currentPlayer;
 		}
 		
 		
-/******* END OF PUBLIC OVERIDE METHODS, PRIVATE BELOW: ********/
+		/**
+		 * Methods below updates the current player int var */
 		private void updatePlayer() {
 			if( currentPlayer == 1)
 			{
@@ -54,6 +54,8 @@ public class R2D2GameModel implements GameModel
 				
 		}
 		
+		/**
+		 * This checks if there is a winner, will be run after each marker set */
 		private int setMarkerCheck(int x, int y)
 		{
 			//give coordinates is start point of check, should be last marker set.
@@ -76,8 +78,9 @@ public class R2D2GameModel implements GameModel
 		}
 
 		
-	/* Methods below used for checkStatus */
-		public int vertCheck(int x, int y, int matchVal)
+		/**
+		 * (1/3) Used for vertcal +/- check */
+		private int vertCheck(int x, int y, int matchVal)
 		{
 		    int count = 1; // one since matchVal is already a match
 			boolean flag = true;
@@ -120,8 +123,9 @@ public class R2D2GameModel implements GameModel
 			return count;
 		} // end of vertCheck
 		
-		
-		public int horzCheck(int x, int y, int matchVal)
+		/**
+		 * (2/3) Used for horizontal +/- check */
+		private int horzCheck(int x, int y, int matchVal)
 		{
 		    int count = 0; // one since matchVal is already a match
 			boolean flag = true;
@@ -164,7 +168,9 @@ public class R2D2GameModel implements GameModel
 			return count;
 		} //end of horzCheck
 		
-		public int diagCheck(int x, int y, int matchVal)
+		/**
+		 * (3/3) Used for diagnal +/- check in both directions */
+		private int diagCheck(int x, int y, int matchVal)
 		{
 		    int count = 0; // one since matchVal is already a match
 			boolean flag = true;
@@ -256,44 +262,32 @@ public class R2D2GameModel implements GameModel
 			}
 			return count;
 		} //end of diag check
-
-	/* Methods above used for checkStatus */	
 		
-		
-		
-}
+} 
+
+// end of class
 	
 
-//Class called Board within we want:
-//- getBoard - array
-//- winner - 0, 1, 2
-//- currentTurn 1, 2
-//- 
+/*********************************************************
 
+ ** Some Additional Information: 
+ **  Team R2-D2 presents... Five in a Row
+----------------------------------------------------------
+* Each entry will consist of a position and a value
+* The board will be 15X15 squares, each square will get its own entry into the map
 
-// How to store game board...
-// Array of arrays [0][9]
+* At this location its current state will be represented by an integer:
+*  0 = no marker, 1 = player one's marker, 2= player's two marker
 
-// Each entry will consist of a position and a value
-// The board will be 15X15 squares, each square will get its own entry into the map
+* setMarker(String pos, int val) will set the given square to the given value as long as there is no conflict - returns bool 
+* will return false if spot is already being used/marked example: setMarker("12-13", 1) player one at 12 (x) 13(y)
 
-// At this location its current state will be represented by an integer:
-// 0 = no marker, 1 = player one's marker, 2= player's two marker
+* checkStatus will be called after every setMarker call to see if there is a winner returns int (0 no winner, 1 player one wins, 2...)
+* this method will use a loop to cycle through each row of the baord
+* conditions to add point to p1 or p2 scores will include:
+* if player has marker in square add one, if previous position x axis +/- 1 has marker OR prev. position +/- y axis has marker for that player
+* check immediate area then follow if x follow x if y follow y if diag follow diag
 
-// GUI will have to read this 2d array and represent the sqares accordingly
-// getBoard() will return the map to the GUI
-// newBoard() sets all positions to 0 -- clear
-
-// setMarker(String pos, int val) will set the given square to the given value as long as there is no conflict - returns bool 
-// will return false if spot is already being used/marked example: setMarker("12-13", 1) player one at 12 (x) 13(y)
-
-// checkStatus will be called after every setMarker call to see if there is a winner returns int (0 no winner, 1 player one wins, 2...)
-
-// this method will use a loop to cycle through each row of the baord
-//conditions to add point to p1 or p2 scores will include:
-// if player has marker in square add one, if previous position x axis +/- 1 has marker OR prev. position +/- y axis has marker for that player
-
-// check immediate area then follow if x follow x if y follow y if diag follow diag
+*********************************************************/	
 	
-	
-	
+// end of file	
