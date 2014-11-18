@@ -11,6 +11,7 @@ public class R2D2GameController implements GameController, Runnable {
     private final GameModel model;
     private final R2D2Connection[] clients = new R2D2Connection[2];
     private boolean doneTurn = false;
+    private int winner = 0;
     
     /**
      * Constructor. Initializes the model.
@@ -44,22 +45,19 @@ public class R2D2GameController implements GameController, Runnable {
     
     @Override
     public void run() {
-        executeGame();
-    }
-    
-    public void executeGame()  {
         // Send HelloMessages to clients
         for(int i=0; i<2; i++) {
-                clients[i].sendMessage(new HelloMessage(i+1));
-            }
+            clients[i].sendMessage(new HelloMessage(i+1));
+        }
         
         // Loop as long as nobody has won the game.
         // Each iteration of the loop is a new turn.
-        while(model.checkStatus() == 0) {
+        while(winner == 0) {
+            doneTurn = false;
             int activePlayer = model.getActivePlayer();
             // Tell the clients whose turn it is.
-            for(int i=0; i<2; i++) {
-                clients[i].sendMessage(InfoMessage.newTurn(activePlayer));
+            for(R2D2Connection client : clients) {
+                client.sendMessage(InfoMessage.newTurn(activePlayer));
             }
             
             // Handle messages in a loop until the turn is over.
@@ -71,6 +69,9 @@ public class R2D2GameController implements GameController, Runnable {
                     }
                 }
             }
+            
+            // Update the status
+            winner = model.checkStatus();
         }
     }
     
@@ -83,6 +84,9 @@ public class R2D2GameController implements GameController, Runnable {
             handleMoveMessage((MoveMessage) message);
         } else if(message instanceof ChatMessage) {
             handleChatMessage((ChatMessage) message);
+        } else {
+            // else this isn't a message we care about.
+            System.out.println("Weird. We got a strange message sent to the server.");
         }
     }
     
@@ -94,6 +98,10 @@ public class R2D2GameController implements GameController, Runnable {
         // Attempt to mark the move on the model. If it works, the turn is done.
         if(model.setMarker(message.getX(), message.getY(), message.getSourceId())) {
             doneTurn = true;
+            // Send the recorded move on to the clients to be drawn.
+            for(R2D2Connection client : clients) {
+                client.sendMessage(message);
+            }
         }
     }
     
