@@ -33,6 +33,10 @@ public class InfoMessage implements Message {
         return winnerPlayer;
     }
     
+    public boolean isGameOver() {
+        return winnerPlayer > 0;
+    }
+    
     /**
      * Returns an end of game info message specifying no active player, and
      * a specific winner player.
