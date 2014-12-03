@@ -1,3 +1,5 @@
+package Messaging;
+
 /**
  * A message containing information about a move (player, x, y).
  * @author tmcnulty14

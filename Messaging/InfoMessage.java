@@ -1,3 +1,5 @@
+package Messaging;
+
 /**
  * A message containing information about the current game state.
  * @author tmcnulty14

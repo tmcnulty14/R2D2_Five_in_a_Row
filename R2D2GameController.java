@@ -1,3 +1,4 @@
+import Messaging.*;
 import java.io.*;
 import java.net.*;
 
@@ -7,7 +8,7 @@ import java.net.*;
  * 
  * @author tmcnulty14
  */
-public class R2D2GameController implements GameController, Runnable {
+public class R2D2GameController implements Runnable {
     private final GameModel model;
     private final R2D2Connection[] clients = new R2D2Connection[2];
     private boolean doneTurn = false;

@@ -1,3 +1,5 @@
+package Messaging;
+
 /**
  * Generic interface for messages. All other messages should implement this.
  * Used to communicate between the client (ClientModel) and server (GameController).

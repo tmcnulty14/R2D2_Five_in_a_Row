@@ -1,3 +1,5 @@
+package Messaging;
+
 /**
  * This message is sent to the client when the game starts up to tell the client
  * what its client id number is (1 or 2).

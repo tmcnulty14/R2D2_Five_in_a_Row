@@ -1,3 +1,5 @@
+package Messaging;
+
 /**
  * A message containing a single line of chat message.
  * @author tmcnulty14
