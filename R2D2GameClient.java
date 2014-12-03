@@ -10,29 +10,32 @@ import java.net.*;
 public class R2D2GameClient implements ClientModel{
     private final ClientGUI gui;
     private int player;
-    private final R2D2Connection server;
+    private R2D2Connection server;
 
-    public R2D2GameClient(R2D2Connection server) throws IOException
+    public R2D2GameClient() throws IOException
     {
         // Initialize GUI
         gui = new Gomoku();
-        this.server = server;
     }
 
     public static void main(String[] args) throws IOException 
     {
+        //Calls constructor
+        R2D2GameClient client = new R2D2GameClient();
+        
         // Initialize the server connection
         Socket s = new Socket("localhost", 18242);
-        R2D2Connection server = new R2D2Connection(s);
-        new Thread(server).start();
-        
-        //Calls constructor
-        R2D2GameClient client = new R2D2GameClient(server);
+        client.setServer(s);
         
         while(true)
         {
             client.checkMessages();
-        }	
+        }
+    }
+    
+    public void setServer(Socket s) throws IOException {
+        server = new R2D2Connection(s);
+        new Thread(server).start();
     }
 
     public void checkMessages()
@@ -43,7 +46,7 @@ public class R2D2GameClient implements ClientModel{
         }
     }
 
-    public void handleMessage(Message message)
+    private void handleMessage(Message message)
     {
         if(message instanceof MoveMessage) {
             handleMoveMessage((MoveMessage) message);
@@ -56,12 +59,12 @@ public class R2D2GameClient implements ClientModel{
         }
     }
 
-    public void handleMoveMessage(MoveMessage message)
+    private void handleMoveMessage(MoveMessage message)
     {
         gui.updateBoard(message.getX(), message.getY(), message.getSourceId());
     }
 
-    public void handleChatMessage(ChatMessage message)
+    private void handleChatMessage(ChatMessage message)
     {
         gui.displayMessage("Player "+message.getSourceId()+": " +message.getChatMessage());
 
@@ -69,7 +72,7 @@ public class R2D2GameClient implements ClientModel{
     /*
      * HandleInfoMessage 
      */
-    public void handleInfoMessage(InfoMessage message)
+    private void handleInfoMessage(InfoMessage message)
     {
         if(message.isGameOver())
         {
@@ -79,7 +82,7 @@ public class R2D2GameClient implements ClientModel{
         }
     }
 
-    public void handleHelloMessage(HelloMessage message)
+    private void handleHelloMessage(HelloMessage message)
     {
         player=message.getClientId();
     }
@@ -96,6 +99,5 @@ public class R2D2GameClient implements ClientModel{
     {
         ChatMessage message = new ChatMessage(player, chat);
         server.sendMessage(message);
-
     }
 }
