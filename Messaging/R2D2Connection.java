@@ -13,6 +13,7 @@ public class R2D2Connection implements Runnable {
     private final Socket socket;
     private final ObjectOutputStream output;
     private final ObjectInputStream input;
+    private static final boolean LOGGING = true;
 
     // A queue of incoming messages.
     private final PriorityBlockingQueue<Message> messageQueue;
@@ -52,6 +53,9 @@ public class R2D2Connection implements Runnable {
         } catch (IOException e) {
             System.out.println(e.getLocalizedMessage());
         }
+        if(LOGGING) {
+            System.out.println("Sent message: " + message);
+        }
     }
 
     /**
@@ -66,7 +70,11 @@ public class R2D2Connection implements Runnable {
      * @return The Message object which was read off the connection.
      */
     public Message readMessage() {
-        return messageQueue.poll();
+        Message message = messageQueue.poll();
+        if(LOGGING) {
+            System.out.println("Reading message: " + message);
+        }
+        return message;
     }
 
     @Override

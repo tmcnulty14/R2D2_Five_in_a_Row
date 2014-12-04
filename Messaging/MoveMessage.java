@@ -1,10 +1,12 @@
 package Messaging;
 
+import java.io.Serializable;
+
 /**
  * A message containing information about a move (player, x, y).
  * @author tmcnulty14
  */
-public class MoveMessage implements Message {
+public class MoveMessage implements Message, Serializable {
     private static final int PRIORITY = 2;
     
     private final int playerId;
@@ -34,5 +36,9 @@ public class MoveMessage implements Message {
     @Override
     public int getPriority() {
         return PRIORITY;
+    }
+    
+    public String toString() {
+        return "Messaging.MoveMessage" + playerId + ", " + moveX + ", " + moveY;
     }
 }

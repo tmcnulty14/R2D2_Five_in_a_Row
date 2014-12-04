@@ -10,12 +10,15 @@ public class Gomoku extends JFrame implements ClientGUI {
     private JButton btn;
     private Button button;
     private JTextArea textArea;
-
-    public Gomoku() {
+    private R2D2GameClient client;
+    
+    public Gomoku(R2D2GameClient client) {
         super("Gomoku");
 
+        this.client = client;
+        
         btn = new JButton("Send");
-        button = new Button();
+        button = new Button(client);
         textArea = new JTextArea();
 
         Dimension dim = getPreferredSize();
@@ -41,16 +44,20 @@ public class Gomoku extends JFrame implements ClientGUI {
 
         // Set the size of the size
         setSize(1000, 600);
+        
+        displayMessage("Hello");
+        displayMessage("HI");
     }
 
     @Override
     public void updateBoard(int x, int y, int player) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        button.updateBoard(x, y, player);
     }
 
     @Override
     public void displayMessage(String message) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        message += "\n";
+        textArea.append(message);
     }
 
 }

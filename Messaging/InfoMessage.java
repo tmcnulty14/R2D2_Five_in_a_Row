@@ -1,10 +1,12 @@
 package Messaging;
 
+import java.io.Serializable;
+
 /**
  * A message containing information about the current game state.
  * @author tmcnulty14
  */
-public class InfoMessage implements Message {
+public class InfoMessage implements Message, Serializable {
     private static final int PRIORITY = 3;
     
     private final int activePlayer; // 0, 1, 2

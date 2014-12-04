@@ -18,8 +18,8 @@ public class R2D2GameClient implements ClientModel{
     */
     public R2D2GameClient() throws IOException
     {
-        
-        gui = new Gomoku();
+        // Initialize GUI
+        gui = new Gomoku(this);
     }
 
     /*
@@ -111,12 +111,13 @@ public class R2D2GameClient implements ClientModel{
     private void handleHelloMessage(HelloMessage message)
     {
         player=message.getClientId();
+        System.out.println("Player id:" + player);
     }
 
 
     @Override
     public void requestMove(int x, int y) {
-        MoveMessage GuiMove = new MoveMessage(  x, y, player);
+        MoveMessage GuiMove = new MoveMessage(player, x, y);
         server.sendMessage(GuiMove);
     }
 

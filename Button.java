@@ -3,6 +3,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -11,11 +12,14 @@ import javax.swing.JPanel;
 
 public class Button extends JPanel implements ActionListener{
 	
-	private JButton buttons[]=new JButton[30];
+	private final ArrayList<JButton> buttons=new ArrayList(30);
 	private ImageIcon X,O;
+        private final R2D2GameClient client;
 	
-	public Button() {
-
+	public Button(R2D2GameClient client) {
+            
+                this.client = client;
+                
 		// Set the layout
 		setLayout(new GridBagLayout());
 		
@@ -34,10 +38,13 @@ public class Button extends JPanel implements ActionListener{
 			gc.gridy = k;
 			for(int i=0; i<15; i++) {
 				gc.gridx = i;
-				buttons[i] = new JButton(" ");
-				buttons[i].addActionListener(this);
-				buttons[i].setPreferredSize(dim);
-				add(buttons[i], gc);
+				
+                                JButton b = new JButton(" ");
+				b.addActionListener(this);
+				b.setPreferredSize(dim);
+				buttons.add(b);
+                                
+                                add(b, gc);
 			}
 		}
 				
@@ -45,19 +52,26 @@ public class Button extends JPanel implements ActionListener{
 	// This is where you would place the Server function to check the logic to change the button
 	public void actionPerformed(ActionEvent e) {
 		JButton clicked = (JButton)e.getSource();
-		
-		switch(clicked.getText()) {
-			case " ":
-				clicked.setText("O");
-				break;
-			case "O":
-				clicked.setText("X");
-				break;
-			case "X":
-				clicked.setText("O");
-				break;
-		}
-		
+		int i = buttons.indexOf(clicked);
+                int x = i%15;
+                int y = i/15;
+                //System.out.println("Clicked:" + i + "x: " + x + "y:" + y);
+                client.requestMove(x, y);
 	}
-	
+        
+        public void updateBoard(int x, int y, int player) {
+            int z = x+(15*y);
+            String text;
+            switch(player) {
+                case 1:
+                    text = "X";
+                    break;
+                case 2:
+                    text = "O";
+                    break;
+                default:
+                    text = "";
+            }
+            buttons.get(z).setText(text);
+        }
 }

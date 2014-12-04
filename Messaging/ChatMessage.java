@@ -1,10 +1,12 @@
 package Messaging;
 
+import java.io.Serializable;
+
 /**
  * A message containing a single line of chat message.
  * @author tmcnulty14
  */
-public class ChatMessage implements Message {
+public class ChatMessage implements Message, Serializable {
     private static final int PRIORITY = 1;
     
     private final int playerId;

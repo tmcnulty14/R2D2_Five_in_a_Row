@@ -13,16 +13,17 @@ public class R2D2GameModel implements GameModel
 		public boolean setMarker(int x, int y, int value)
 		{
 			int curVal = this.boardArray[x][y];	
+                        System.out.println(curVal + " " + value + " " + currentPlayer);
 			if (curVal == 0 && value == currentPlayer)
 			{
 			    boardArray[x][y] = value; //position unmarked - set marker!
-			    gameWinner = setMarkerCheck(x, y); //update the game winner check from last marker set
-				updatePlayer(); //changes who's turn it is
-				return true;
+			    //gameWinner = setMarkerCheck(x, y); //update the game winner check from last marker set
+                            updatePlayer(); //changes who's turn it is
+                            return true;
 			}
 			else
 			{	// return false marker already used!!!
-				return false;
+                            return false;
 			} 
 		} 
 		

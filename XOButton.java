@@ -31,4 +31,8 @@ public class XOButton extends JButton implements ActionListener{
 				break;
 		}
 	}
+        
+        public void updateBoard(int x, int y, int player) {
+            
+        }
 }
