@@ -34,7 +34,9 @@ public class Gomoku extends JFrame implements ClientGUI {
         textArea.setPreferredSize(dim);
         add(new JScrollPane(textArea));
         add(btn);
-
+        
+        // Action to send messgaes back and forth
+        
         // Make frame visible
         setVisible(true);
 
@@ -45,7 +47,7 @@ public class Gomoku extends JFrame implements ClientGUI {
         // Set the size of the size
         setSize(1000, 600);
         
-        displayMessage("Hello");
+        //displayMessage("Hello");
         displayMessage("HI");
     }
 
