@@ -7,16 +7,16 @@ public class R2D2GameModel implements GameModel
 		private int currentPlayer = 1; 
 		
 		
-		@Overide
+		@Override
 		/**
 		 * Sets marker in array return bool if valid move */
 		public boolean setMarker(int x, int y, int value)
 		{
 			int curVal = this.boardArray[x][y];	
-			if (curVal == 0 || curVal == null && value == currentPlayer)
+			if (curVal == 0 && value == currentPlayer)
 			{
 			    boardArray[x][y] = value; //position unmarked - set marker!
-				gamerWinner = setMarkerCheck( x, y); //update the game winner, check from last marker set
+			    gameWinner = setMarkerCheck(x, y); //update the game winner check from last marker set
 				updatePlayer(); //changes who's turn it is
 				return true;
 			}
@@ -26,14 +26,14 @@ public class R2D2GameModel implements GameModel
 			} 
 		} 
 		
-		@Overide
+		@Override
 		/**
 		 * Returns the game winner int */
 		public int checkStatus(){
 			return gameWinner;
 		}
 		
-		@Overide
+		@Override
 		/**
 		 * Return the current player number */
 		public int getActivePlayer(){
@@ -65,9 +65,9 @@ public class R2D2GameModel implements GameModel
 			int winner = -1;
 			int vertCount = vertCheck(x, y, matchVal);
 			int diagCount = diagCheck(x, y, matchVal);
-			int horzCount = horzCheck(x, y, matchVal);
+			int horzCheck = horzCheck(x, y, matchVal);
 			
-			if(vertCount >= 5 || diagCount >= 5 || horizCount >= 5)
+			if(vertCount >= 5 || diagCount >= 5 || horzCheck >= 5)
 			{
 				return matchVal;
 			}
@@ -84,6 +84,7 @@ public class R2D2GameModel implements GameModel
 		{
 		    int count = 1; // one since matchVal is already a match
 			boolean flag = true;
+			boolean flagPos = true;
 			int xCheck = x;
 			int yCheck = y;
 			
@@ -114,7 +115,7 @@ public class R2D2GameModel implements GameModel
 				}
 				else{
 					// match not found/not consecutive stop search!!
-					flagPos == false;
+					flagPos = false;
 				}
 				// OR  stop once checked all!
 				if(yCheck > 14 )
@@ -129,6 +130,7 @@ public class R2D2GameModel implements GameModel
 		{
 		    int count = 0; // one since matchVal is already a match
 			boolean flag = true;
+			boolean flagPos = true;
 			int xCheck = x;
 			int yCheck = y;
 			
@@ -159,7 +161,7 @@ public class R2D2GameModel implements GameModel
 				}
 				else{
 					// match not found/not consecutive stop search!!
-					flagPos == false;
+					flagPos = false;
 				}
 				// OR  stop once checked all!
 				if(xCheck > 14 )
@@ -174,6 +176,7 @@ public class R2D2GameModel implements GameModel
 		{
 		    int count = 0; // one since matchVal is already a match
 			boolean flag = true;
+			boolean flagPos = true;
 			int xCheck = x;
 			int yCheck = y;
 			
@@ -207,7 +210,7 @@ public class R2D2GameModel implements GameModel
 				}
 				else{
 					// match not found/not consecutive stop search!!
-					flagPos == false;
+					flagPos = false;
 				}
 				// OR  stop once checked all!
 				if(xCheck < 0 || yCheck > 14 )
@@ -219,9 +222,10 @@ public class R2D2GameModel implements GameModel
 			} else {
 				//reset all variables for left diag direction!
 				flag = true;
+				flagPos = true;
 				yCheck = y;
 				xCheck = x;
-				counter = 0;
+				count = 0;
 			}
 		
 			// check positive vertial left direction values above starting point
@@ -254,7 +258,7 @@ public class R2D2GameModel implements GameModel
 				}
 				else{
 					// match not found/not consecutive stop search!!
-					flagPos == false;
+					flagPos = false;
 				}
 				// OR  stop once checked all!
 				if(xCheck > 14 || yCheck > 14 )
