@@ -12,19 +12,26 @@ public class R2D2GameClient implements ClientModel{
     private final ClientGUI gui;
     private int player;
     private R2D2Connection server;
-
+    
+    /*
+    * Constructor initializes new GUI object
+    */
     public R2D2GameClient() throws IOException
     {
-        // Initialize GUI
+        
         gui = new Gomoku();
     }
 
+    /*
+    *Main method calls constructor
+    *and initializes server connection
+    */
     public static void main(String[] args) throws IOException 
     {
-        //Calls constructor
+        
         R2D2GameClient client = new R2D2GameClient();
         
-        // Initialize the server connection
+        
         Socket s = new Socket("localhost", 18242);
         client.setServer(s);
         
@@ -34,11 +41,18 @@ public class R2D2GameClient implements ClientModel{
         }
     }
     
+    /*
+    *Sets up new R2D2 serve rconnection
+    *@param  Socket s server socket
+    */
     public void setServer(Socket s) throws IOException {
         server = new R2D2Connection(s);
         new Thread(server).start();
     }
 
+    /*
+    * Calls handle message method if server has message waiting
+    */
     public void checkMessages()
     {
         if(server.hasMessage())
@@ -47,6 +61,9 @@ public class R2D2GameClient implements ClientModel{
         }
     }
 
+    /*
+    * Handles message based on type
+    */
     private void handleMessage(Message message)
     {
         if(message instanceof MoveMessage) {
@@ -59,19 +76,24 @@ public class R2D2GameClient implements ClientModel{
             handleHelloMessage((HelloMessage) message);
         }
     }
-
+    /*
+    * Calls updateBoard method on gui to make a movie
+    */
     private void handleMoveMessage(MoveMessage message)
     {
         gui.updateBoard(message.getX(), message.getY(), message.getSourceId());
     }
-
+    /*
+    * Calls displayMessage method for a chat message between players
+    */
     private void handleChatMessage(ChatMessage message)
     {
         gui.displayMessage("Player "+message.getSourceId()+": " +message.getChatMessage());
 
     }
     /*
-     * HandleInfoMessage 
+     * Calls displayMessage with either the winning player
+    *  or which Player's turn it is
      */
     private void handleInfoMessage(InfoMessage message)
     {
@@ -83,6 +105,9 @@ public class R2D2GameClient implements ClientModel{
         }
     }
 
+    /*
+    * Displays greeting to player based on ID
+    */
     private void handleHelloMessage(HelloMessage message)
     {
         player=message.getClientId();
