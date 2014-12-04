@@ -83,7 +83,7 @@ public class R2D2Connection implements Runnable {
              try {
                  messageQueue.add((Message) input.readObject());
              } catch (IOException | ClassNotFoundException e) {
-                 System.out.println(e.getLocalizedMessage());
+                 System.out.println("Error" + e.getLocalizedMessage());
              }
         }
     }
