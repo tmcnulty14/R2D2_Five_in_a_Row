@@ -12,8 +12,7 @@ public class R2D2GameModel implements GameModel
 		 * Sets marker in array return bool if valid move */
 		public boolean setMarker(int x, int y, int value)
 		{
-			int curVal = this.boardArray[x][y];	
-                        System.out.println(curVal + " " + value + " " + currentPlayer);
+			int curVal = boardArray[x][y];	
 			if (curVal == 0 && value == currentPlayer)
 			{
 			    boardArray[x][y] = value; //position unmarked - set marker!
@@ -61,7 +60,7 @@ public class R2D2GameModel implements GameModel
 		{
 			//give coordinates is start point of check, should be last marker set.
 			// matchVal is the value to be matched 5 in a row uses passed index value
-			int matchVal = this.boardArray[x][y];
+			int matchVal = boardArray[x][y];
 			// winner 0 = no winner, 1 = player one winner, 2 = player two winner
 			int winner = -1;
 			int vertCount = vertCheck(x, y, matchVal);
@@ -92,7 +91,7 @@ public class R2D2GameModel implements GameModel
 			// check positive vertial values above starting point
 			while(flag)
 			{
-				if( this.boardArray[xCheck][yCheck] == matchVal){
+				if( boardArray[xCheck][yCheck] == matchVal){
 					count++;
 					yCheck--;
 				}
@@ -110,7 +109,7 @@ public class R2D2GameModel implements GameModel
 			// check all negative vertical values below starting point
 			while(flag)
 			{
-				if( this.boardArray[xCheck][yCheck] == matchVal){
+				if( boardArray[xCheck][yCheck] == matchVal){
 					count++;
 					yCheck++;
 				}
@@ -138,7 +137,7 @@ public class R2D2GameModel implements GameModel
 			// check positive vertial values above starting point
 			while(flag)
 			{
-				if( this.boardArray[xCheck][yCheck] == matchVal){
+				if( boardArray[xCheck][yCheck] == matchVal){
 					count++;
 					xCheck--;
 				}
@@ -156,7 +155,7 @@ public class R2D2GameModel implements GameModel
 			// check all negative vertical values below starting point
 			while(flag)
 			{
-				if( this.boardArray[xCheck][yCheck] == matchVal){
+				if( boardArray[xCheck][yCheck] == matchVal){
 					count++;
 					xCheck++;
 				}
@@ -184,7 +183,7 @@ public class R2D2GameModel implements GameModel
 			// check positive vertial right direction values above starting point
 			while(flag)
 			{
-				if( this.boardArray[xCheck][yCheck] == matchVal){
+				if( boardArray[xCheck][yCheck] == matchVal){
 					count++;
 					yCheck--;
 					xCheck++;
@@ -204,7 +203,7 @@ public class R2D2GameModel implements GameModel
 			// check all negative vertical values below starting point
 			while(flag)
 			{
-				if( this.boardArray[xCheck][yCheck] == matchVal){
+				if( boardArray[xCheck][yCheck] == matchVal){
 					count++;
 					yCheck++;
 					xCheck--;
@@ -232,7 +231,7 @@ public class R2D2GameModel implements GameModel
 			// check positive vertial left direction values above starting point
 			while(flag)
 			{
-				if( this.boardArray[xCheck][yCheck] == matchVal){
+				if( boardArray[xCheck][yCheck] == matchVal){
 					count++;
 					yCheck--;
 					xCheck--;
@@ -252,7 +251,7 @@ public class R2D2GameModel implements GameModel
 			// check all negative vertical values below starting point
 			while(flag)
 			{
-				if( this.boardArray[xCheck][yCheck] == matchVal){
+				if( boardArray[xCheck][yCheck] == matchVal){
 					count++;
 					yCheck++;
 					xCheck++;
