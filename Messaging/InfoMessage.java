@@ -64,4 +64,13 @@ public class InfoMessage implements Message, Serializable {
     public int getPriority() {
         return PRIORITY;
     }
+    
+    @Override
+    public String toString() {
+        String string = "Messaging.InfoMessage: ";
+        string += isGameOver() ? 
+                ("Game Winner: " + getWinnerPlayer()) : 
+                ("New turn: " + getActivePlayer());
+        return string;
+    }
 }

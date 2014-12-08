@@ -81,6 +81,27 @@ public class R2D2GameController implements Runnable {
             // Update the status
             winner = model.checkStatus();
         }
+        
+        for(R2D2Connection client : clients) {
+            client.sendMessage(InfoMessage.gameOver(winner));
+        }
+        
+        // Wait for a second while clients final messaging is completed.
+        try {
+            Thread.sleep(1000);
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+        /**
+        // Close the client connections.
+        try {
+            for(R2D2Connection client : clients) {
+                client.close();
+            }   
+        } catch (IOException e) {
+            System.out.println(e.getLocalizedMessage());
+        }
+        */
     }
     
     /**
