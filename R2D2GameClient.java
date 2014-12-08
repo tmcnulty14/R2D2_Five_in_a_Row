@@ -9,28 +9,17 @@ import java.net.*;
  */
 
 public class R2D2GameClient implements ClientModel{
-    private final ClientGUI gui;
+    private ClientGUI gui;
     private int player;
     private R2D2Connection server;
     
-    /*
-    * Constructor initializes new GUI object
-    */
-    public R2D2GameClient() throws IOException
-    {
-        // Initialize GUI
-        gui = new Gomoku(this);
-    }
-
     /*
     *Main method calls constructor
     *and initializes server connection
     */
     public static void main(String[] args) throws IOException 
     {
-        
         R2D2GameClient client = new R2D2GameClient();
-        
         
         Socket s = new Socket("localhost", 18242);
         client.setServer(s);
@@ -111,7 +100,11 @@ public class R2D2GameClient implements ClientModel{
     private void handleHelloMessage(HelloMessage message)
     {
         player=message.getClientId();
-        System.out.println("Player id:" + player);
+        System.out.println("Client initalized with player id:" + player);
+        
+        // Initialize GUI
+        gui = new Gomoku(this);
+        gui.displayMessage("Welcome to five in a row! You are player " + player + ".");
     }
 
 

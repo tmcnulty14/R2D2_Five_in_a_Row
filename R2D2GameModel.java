@@ -16,7 +16,7 @@ public class R2D2GameModel implements GameModel
 			if (curVal == 0 && value == currentPlayer)
 			{
 			    boardArray[x][y] = value; //position unmarked - set marker!
-			    gameWinner = setMarkerCheck(x, y); //update the game winner check from last marker set
+			    //gameWinner = setMarkerCheck(x, y); //update the game winner check from last marker set
                             updatePlayer(); //changes who's turn it is
                             return true;
 			}

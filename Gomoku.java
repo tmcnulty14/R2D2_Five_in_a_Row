@@ -46,9 +46,6 @@ public class Gomoku extends JFrame implements ClientGUI {
 
         // Set the size of the size
         setSize(1000, 600);
-        
-        //displayMessage("Hello");
-        displayMessage("HI");
     }
 
     @Override

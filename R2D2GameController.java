@@ -51,6 +51,13 @@ public class R2D2GameController implements Runnable {
             clients[i].sendMessage(new HelloMessage(i+1));
         }
         
+        // Wait for a second while clients start up.
+        try {
+            Thread.sleep(1000);
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+        
         // Loop as long as nobody has won the game.
         // Each iteration of the loop is a new turn.
         while(winner == 0) {
