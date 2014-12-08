@@ -75,13 +75,13 @@ public class R2D2GameModel implements GameModel
 			
 			// winner 0 = no winner, 1 = player one winner, 2 = player two winner
 			int vertCount = vertCheck(x, y, matchVal);
-			//int diagCount = diagCheck(x, y, matchVal);
+			int diagCount = diagCheck(x, y, matchVal);
 			int horizCount = horizCheck(x, y, matchVal);
 			
-			//System.out.println("Checker vert: "+vertCount+" diag: "+diagCount+" horz: "+horzCount);
+			System.out.println("Checker vert: "+vertCount+" diag: "+diagCount+" horz: "+horizCount);
 			
-			// If any counts return 5 in a row, then return the match value (val of winner)
-			if(vertCount > 4 || horizCount > 4)
+			// If any counts return 5 in a row, then return the match value (player number)
+			if(vertCount > 4 || horizCount > 4 || diagCount > 4)
 			{
 				return matchVal;
 			}
@@ -144,7 +144,7 @@ public class R2D2GameModel implements GameModel
 					count = 0;
 				}
 				
-				if( count > 4 || y == 14)
+				if( count > 4 || x == 14)
 				{
 					// if we find 5 in a row or we are at the end then stop...
 					flag = false;
@@ -159,105 +159,87 @@ public class R2D2GameModel implements GameModel
 		} // end of vertCheck
 		
 		/**
-		 * (3/3) Used for diagnal +/- check in both directions 
+		 * (2/3) Used for horizontal (x) check */
 		private int diagCheck(int x, int y, int matchVal)
 		{
-		    int count = 0; // one since matchVal is already a match
-			boolean flag = true;
-			boolean flagPos = true;
-			int xCheck = x;
-			int yCheck = y;
+		    int count = 0; // running counter for checker
+			boolean flag = true; 
+			int initialX = x; // this variable and below
+			int initialY = y; // save initial value for later
 			
-			// check positive vertial right direction values above starting point
-			while(flag)
+			// first diagonal check left to right set starting point
+			while( x !=0 || y!=0)
 			{
-				if( boardArray[xCheck][yCheck] == matchVal){
-					count++;
-					yCheck--;
-					xCheck++;
-				}
-				else{
-					// match not found/not consecutive stop search!!
-					flag = false;
-				}
-				// Stop once checked all!
-				if(yCheck < 0 || xCheck > 14 )
-					flag = false;
-			}
-			// reset variables
-			flag = true;
-			xCheck = x;
-			yCheck = y;
-			// check all negative vertical values below starting point
-			while(flag)
-			{
-				if( boardArray[xCheck][yCheck] == matchVal){
-					count++;
-					yCheck++;
-					xCheck--;
-				}
-				else{
-					// match not found/not consecutive stop search!!
-					flagPos = false;
-				}
-				// OR  stop once checked all!
-				if(xCheck < 0 || yCheck > 14 )
-					flagPos = false;
+				x--;
+				y--;
 			}
 			
-			if (count > 4){
-			return count;
-			} else {
-				//reset all variables for left diag direction!
-				flag = true;
-				flagPos = true;
-				yCheck = y;
-				xCheck = x;
-				count = 0;
-			}
-		
-			// check positive vertial left direction values above starting point
+			// start left to right check with new starting points
 			while(flag)
 			{
-				if( boardArray[xCheck][yCheck] == matchVal){
+				if( boardArray[x][y] == matchVal){
 					count++;
-					yCheck--;
-					xCheck--;
 				}
 				else{
-					// match not found/not consecutive stop search!!
+					// did not find match stop if...
+					count = 0;
+				}
+				
+				if( count > 4 || y == 14 || x == 14)
+				{
+					// if we find 5 in a row or we are at the end then stop...
 					flag = false;
 				}
-				// Stop once checked all!
-				if(yCheck < 0 || xCheck < 0 )
-					flag = false;
+				
+				//keep checking
+				x++;
+				y++;
 			}
-			// reset variables
+			
+			if( count > 4)
+			{
+				return count;
+			}
+			
+			// left to right diagonal check failed, try right to left from initial points
+			x = initialX;
+			y = initialY;
 			flag = true;
-			xCheck = x;
-			yCheck = y;
-			// check all negative vertical values below starting point
+			count = 0;
+			
+			// first diagonal check left to right set starting point
+			while( x !=14 || y!=0)
+			{
+				x++;
+				y--;
+			}
+			
+			// start right to left check with new starting points
 			while(flag)
 			{
-				if( boardArray[xCheck][yCheck] == matchVal){
+				if( boardArray[x][y] == matchVal){
 					count++;
-					yCheck++;
-					xCheck++;
 				}
 				else{
-					// match not found/not consecutive stop search!!
-					flagPos = false;
+					// did not find match stop if...
+					count = 0;
 				}
-				// OR  stop once checked all!
-				if(xCheck > 14 || yCheck > 14 )
-					flagPos = false;
+				
+				if( count > 4 || y == 14 || x == 0)
+				{
+					// if we find 5 in a row or we are at the end then stop...
+					flag = false;
+				}
+				
+				//keep checking
+				x--;
+				y++;
 			}
+			
 			return count;
-		} //end of diag check */
+		} // end of vertCheck
 		
-} 
-
-// end of class
+} // end of class
 	
 
 /*********************************************************
