@@ -87,7 +87,6 @@ public class R2D2ClientModel implements ClientModel{
      */
     private void handleInfoMessage(InfoMessage message)
     {
-        System.out.println("INFO: " + message.isGameOver());
         if(message.isGameOver())
         {
             gui.displayMessage("Player " + message.getWinnerPlayer() + " is the winner!");

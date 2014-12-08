@@ -54,7 +54,7 @@ public class R2D2Connection implements Runnable {
             System.out.println(e.getLocalizedMessage());
         }
         if(LOGGING) {
-            System.out.println("Sent message: " + message);
+            System.out.println("Sending message: " + message);
         }
     }
 
