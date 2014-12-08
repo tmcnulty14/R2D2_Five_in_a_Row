@@ -9,16 +9,18 @@ public class R2D2GameModel implements GameModel
 		
 		@Override
 		/**
-		 * Sets marker in array return bool if valid move */
+		 * Sets marker in array return boolean if valid move */
 		public boolean setMarker(int x, int y, int value)
 		{
 			int curVal = boardArray[x][y];	
 			if (curVal == 0 && value == currentPlayer)
 			{
 			    boardArray[x][y] = value; //position unmarked - set marker!
-			    //gameWinner = setMarkerCheck(x, y); //update the game winner check from last marker set
-                            updatePlayer(); //changes who's turn it is
-                            return true;
+
+			    gameWinner = setMarkerCheck(x, y); //update the game winner check from last marker set
+                updatePlayer(); //changes who's turn it is
+                return true;
+
 			}
 			else
 			{	// return false marker already used!!!
@@ -42,7 +44,7 @@ public class R2D2GameModel implements GameModel
 		
 		
 		/**
-		 * Methods below updates the current player int var */
+		 * Methods below updates the current player int variable */
 		private void updatePlayer() {
 			if( currentPlayer == 1)
 			{
@@ -61,71 +63,67 @@ public class R2D2GameModel implements GameModel
 			//give coordinates is start point of check, should be last marker set.
 			// matchVal is the value to be matched 5 in a row uses passed index value
 			int matchVal = boardArray[x][y];
-			// winner 0 = no winner, 1 = player one winner, 2 = player two winner
-			int winner = -1;
-			int vertCount = vertCheck(x, y, matchVal);
-			int diagCount = diagCheck(x, y, matchVal);
-			int horzCheck = horzCheck(x, y, matchVal);
 			
-			if(vertCount >= 5 || diagCount >= 5 || horzCheck >= 5)
+			//System.out.println("set marker called... match val is "+matchVal+".");
+			
+			// winner 0 = no winner, 1 = player one winner, 2 = player two winner
+			int vertCount = vertCheck(x, y, matchVal);
+			//int diagCount = diagCheck(x, y, matchVal);
+			//int horzCount = horzCheck(x, y, matchVal);
+			
+			//System.out.println("Checker vert: "+vertCount+" diag: "+diagCount+" horz: "+horzCount);
+			
+			// If any counts return 5 in a row, then return the match value (val of winner)
+			if(vertCount >= 5 )
 			{
 				return matchVal;
 			}
 			else
 			{
+				// if non of the counts are greater than 5 return 0
 				return 0;
 			}
 		}
 
 		
 		/**
-		 * (1/3) Used for vertcal +/- check */
+		 * (1/3) Used for vertical +/- check */
 		private int vertCheck(int x, int y, int matchVal)
 		{
-		    int count = 1; // one since matchVal is already a match
-			boolean flag = true;
-			boolean flagPos = true;
-			int xCheck = x;
-			int yCheck = y;
+		    int count = 0; // running counter for checker
+			boolean flag = true; 
+			y = 0; // vertical check start y at 0 - x will not change
+			// check positive vertical values above starting point
 			
-			// check positive vertial values above starting point
 			while(flag)
 			{
-				if( boardArray[xCheck][yCheck] == matchVal){
+				if( boardArray[x][y] == matchVal){
 					count++;
-					yCheck--;
 				}
 				else{
-					// match not found/not consecutive stop search!!
+					// did not find match stop if...
+					if(count >0)
+					{
+						flag = false;
+					}
+				}
+				
+				if( count > 4 || y == 14)
+				{
+					// if we find 5 in a row or we are at the end then stop...
 					flag = false;
 				}
-				// Stop once checked all!
-				if(yCheck < 0 )
-					flag = false;
+				
+				//keep checking
+				y++;
 			}
-			// reset variables
-			flag = true;
-			yCheck = y;
-			// check all negative vertical values below starting point
-			while(flag)
-			{
-				if( boardArray[xCheck][yCheck] == matchVal){
-					count++;
-					yCheck++;
-				}
-				else{
-					// match not found/not consecutive stop search!!
-					flagPos = false;
-				}
-				// OR  stop once checked all!
-				if(yCheck > 14 )
-					flagPos = false;
-			}
+			
 			return count;
+			
 		} // end of vertCheck
 		
 		/**
-		 * (2/3) Used for horizontal +/- check */
+		 * (2/3) Used for horizontal +/- check 
 		private int horzCheck(int x, int y, int matchVal)
 		{
 		    int count = 0; // one since matchVal is already a match
@@ -171,7 +169,7 @@ public class R2D2GameModel implements GameModel
 		} //end of horzCheck
 		
 		/**
-		 * (3/3) Used for diagnal +/- check in both directions */
+		 * (3/3) Used for diagnal +/- check in both directions 
 		private int diagCheck(int x, int y, int matchVal)
 		{
 		    int count = 0; // one since matchVal is already a match
@@ -265,7 +263,7 @@ public class R2D2GameModel implements GameModel
 					flagPos = false;
 			}
 			return count;
-		} //end of diag check
+		} //end of diag check */
 		
 } 
 
