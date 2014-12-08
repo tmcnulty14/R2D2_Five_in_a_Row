@@ -29,8 +29,9 @@ public class R2D2ClientGUI extends JFrame implements ClientGUI {
         
         btn = new JButton("Send");
         btn.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
-                client.sendChatMessage(textField.getText());
+                sendChatMessage(textField.getText());
                 textField.setText("");
             }
         });
@@ -85,5 +86,9 @@ public class R2D2ClientGUI extends JFrame implements ClientGUI {
         Calendar cal = Calendar.getInstance();
     	String time = sdf.format(cal.getTime());
         textArea.insert(time + ": " + message + "\n", 0);
+    }
+    
+    private void sendChatMessage(String chat) {
+        client.sendChatMessage(chat);
     }
 }
