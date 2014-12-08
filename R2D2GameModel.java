@@ -173,13 +173,13 @@ public class R2D2GameModel implements GameModel
 				x--;
 				y--;
 			}
-			System.out.println("l to r set up var");
+
 			// start left to right check with new starting points
 			while(flag)
 			{
 				if( boardArray[x][y] == matchVal){
 					count++;
-					System.out.println("Checking left to right:" +x+", "+y);
+					//System.out.println("Checking left to right:" +x+", "+y);
 				}
 				else{
 					// did not find match stop if...
@@ -215,13 +215,13 @@ public class R2D2GameModel implements GameModel
 				x++;
 				y--;
 			}
-			System.out.println("r to l set up var");
+			
 			// start right to left check with new starting points
 			while(flag)
 			{
 				if( boardArray[x][y] == matchVal){
 					count++;
-					System.out.println("Checking right to left:" +x+", "+y);
+					//System.out.println("Checking right to left:" +x+", "+y);
 				}
 				else{
 					// did not find match stop if...
