@@ -1,3 +1,5 @@
+package Server;
+
 public interface GameModel {
     /**
      * @param x The x coordinate of the target location.

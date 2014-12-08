@@ -1,3 +1,5 @@
+package Client;
+
 public interface ClientModel {
     /**
      * Called by the GUI when the player clicks a board location.

@@ -1,3 +1,5 @@
+package Client;
+
 import java.awt.Dimension;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,10 +15,10 @@ public class R2D2ClientGUI extends JFrame implements ClientGUI {
     private final JButton btn;
     private final Button button;
     private final JTextArea textArea;
-    private final R2D2ClientModel client;
+    private final R2D2GameClient client;
     private final SimpleDateFormat sdf;
     
-    public R2D2ClientGUI(R2D2ClientModel client, int player) {
+    public R2D2ClientGUI(R2D2GameClient client, int player) {
         super("Five in a row - Player " + player);
 
         this.client = client;

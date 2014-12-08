@@ -1,3 +1,5 @@
+package Client;
+
 public interface ClientGUI {
     /**
      * Adds a board piece to the GUI display.

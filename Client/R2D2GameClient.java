@@ -1,3 +1,5 @@
+package Client;
+
 import Messaging.*;
 import java.io.*;
 import java.net.*;
@@ -8,7 +10,7 @@ import java.net.*;
  * @author RyanAhearn
  */
 
-public class R2D2ClientModel implements ClientModel{
+public class R2D2GameClient implements ClientModel{
     private ClientGUI gui;
     private int player;
     private R2D2Connection server;
@@ -20,7 +22,7 @@ public class R2D2ClientModel implements ClientModel{
     */
     public static void main(String[] args) throws IOException 
     {
-        R2D2ClientModel client = new R2D2ClientModel();
+        R2D2GameClient client = new R2D2GameClient();
         
         Socket s = new Socket("localhost", 18242);
         client.setServer(s);
@@ -29,6 +31,8 @@ public class R2D2ClientModel implements ClientModel{
         {
             client.checkMessages();
         }
+        
+        client.close();
     }
     
     /*
@@ -89,7 +93,7 @@ public class R2D2ClientModel implements ClientModel{
     {
         if(message.isGameOver())
         {
-            gui.displayMessage("Player " + message.getWinnerPlayer() + " is the winner!");
+            gui.displayMessage("PLAYER " + message.getWinnerPlayer() + " IS THE WINNER!");
             gameOver = true;
         } else {
             gui.displayMessage("It's Player " + message.getActivePlayer() + "'s turn");
@@ -129,5 +133,9 @@ public class R2D2ClientModel implements ClientModel{
 
     private boolean isGameOver() {
         return gameOver;
+    }
+
+    private void close() throws IOException {
+        server.close();
     }
 }

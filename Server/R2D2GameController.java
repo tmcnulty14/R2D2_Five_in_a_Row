@@ -1,3 +1,5 @@
+package Server;
+
 import Messaging.*;
 import java.io.*;
 import java.net.*;
@@ -19,6 +21,7 @@ public class R2D2GameController implements Runnable {
      */
     public R2D2GameController() {
         model = new R2D2GameModel();
+        System.out.println("GameController: Initialized.");
     }
     
     /**
@@ -39,13 +42,14 @@ public class R2D2GameController implements Runnable {
             clients[0] = client1;
             clients[1] = client2;
         } catch (IOException e) {
-            System.out.println(e.getLocalizedMessage());
+            System.out.println("Error when setting client sockets.");
         }
-        
+        System.out.println("GameController: Sockets assigned.");
     }
     
     @Override
     public void run() {
+        System.out.println("GameController: Running game.");
         // Send HelloMessages to clients
         for(int i=0; i<2; i++) {
             clients[i].sendMessage(new HelloMessage(i+1));
@@ -54,7 +58,7 @@ public class R2D2GameController implements Runnable {
         // Wait for a second while clients start up.
         try {
             Thread.sleep(1000);
-        } catch(InterruptedException ex) {
+        } catch(InterruptedException e) {
             Thread.currentThread().interrupt();
         }
         
@@ -84,24 +88,10 @@ public class R2D2GameController implements Runnable {
         
         for(R2D2Connection client : clients) {
             client.sendMessage(InfoMessage.gameOver(winner));
+            client.close();
         }
         
-        // Wait for a second while clients final messaging is completed.
-        try {
-            Thread.sleep(1000);
-        } catch(InterruptedException ex) {
-            Thread.currentThread().interrupt();
-        }
-        /**
-        // Close the client connections.
-        try {
-            for(R2D2Connection client : clients) {
-                client.close();
-            }   
-        } catch (IOException e) {
-            System.out.println(e.getLocalizedMessage());
-        }
-        */
+        System.out.println("GameController: Game is over.");
     }
     
     /**
@@ -115,7 +105,7 @@ public class R2D2GameController implements Runnable {
             handleChatMessage((ChatMessage) message);
         } else {
             // else this isn't a message we care about.
-            System.out.println("Weird. We got a strange message sent to the server.");
+            System.out.println("Error: Server received unknown or improper message.");
         }
     }
     

@@ -1,3 +1,5 @@
+package Server;
+
 import java.io.*;
 
 /**
@@ -168,7 +170,7 @@ public class R2D2GameModel implements GameModel
 			int initialY = y; // save initial value for later
 			
 			// first diagonal check left to right set starting point
-			while( x !=0 && y!=0)
+			while(x!=0 && y!=0)
 			{
 				x--;
 				y--;

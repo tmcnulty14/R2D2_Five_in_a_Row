@@ -14,6 +14,8 @@ public class R2D2Connection implements Runnable {
     private final ObjectOutputStream output;
     private final ObjectInputStream input;
     private static final boolean LOGGING = true;
+    private static final boolean ERROR_LOGGING = false;
+    private boolean running = false;
 
     // A queue of incoming messages.
     private final PriorityBlockingQueue<Message> messageQueue;
@@ -77,20 +79,30 @@ public class R2D2Connection implements Runnable {
         return message;
     }
     
-    public void close() throws IOException {
-        input.close();
-        output.close();
-        socket.close();
+    public void close() {
+        running = false;
+        try {
+            input.close();
+            output.close();
+            socket.close();
+        } catch (IOException e) {
+            if(LOGGING && ERROR_LOGGING) {
+                System.out.println("Error when attempting to close connection to clients.");
+            }
+        }
     }
 
     @Override
     public void run() {
-        while(true) {
-             try {
-                 messageQueue.add((Message) input.readObject());
-             } catch (IOException | ClassNotFoundException e) {
-                 System.out.println("Error" + e.getLocalizedMessage());
-             }
+        running = true;
+        while(running) {
+            try {
+                messageQueue.add((Message) input.readObject());
+            } catch (IOException | ClassNotFoundException e) {
+                if(LOGGING && ERROR_LOGGING) {
+                    System.out.println("Error: Failed to pull messages over socket.");
+                }
+            }
         }
     }
 }
