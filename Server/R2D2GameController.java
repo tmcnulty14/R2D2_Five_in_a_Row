@@ -129,10 +129,9 @@ public class R2D2GameController implements Runnable {
      * @param message A ChatMessage object.
      */
     private void handleChatMessage(ChatMessage message) {
-        // Set the target player to the client id which is not the source.
-        int target = message.getSourceId() == 1 ? 2 : 1;
-        
-        // Send the chat message on to the target client.
-        clients[target - 1].sendMessage(message);
+        // Send the chat message to both players.
+        for(R2D2Connection client : clients) {
+            client.sendMessage(message);
+        }
     }
 }
