@@ -24,7 +24,9 @@ public class R2D2GameClient implements ClientModel{
     {
         R2D2GameClient client = new R2D2GameClient();
         
-        Socket s = new Socket("localhost", 18242);
+        String address = args.length > 0 ? args[0] : "localhost";
+        int port = 18242;
+        Socket s = new Socket(address, port);
         client.setServer(s);
         
         while(!client.isGameOver())
