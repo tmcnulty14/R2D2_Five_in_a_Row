@@ -76,6 +76,12 @@ public class R2D2Connection implements Runnable {
         }
         return message;
     }
+    
+    public void close() throws IOException {
+        input.close();
+        output.close();
+        socket.close();
+    }
 
     @Override
     public void run() {
