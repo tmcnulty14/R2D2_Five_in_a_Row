@@ -8,10 +8,11 @@ import java.net.*;
  * @author RyanAhearn
  */
 
-public class R2D2GameClient implements ClientModel{
+public class R2D2ClientModel implements ClientModel{
     private ClientGUI gui;
     private int player;
     private R2D2Connection server;
+    private boolean gameOver = false;
     
     /*
     *Main method calls constructor
@@ -19,12 +20,12 @@ public class R2D2GameClient implements ClientModel{
     */
     public static void main(String[] args) throws IOException 
     {
-        R2D2GameClient client = new R2D2GameClient();
+        R2D2ClientModel client = new R2D2ClientModel();
         
         Socket s = new Socket("localhost", 18242);
         client.setServer(s);
         
-        while(true)
+        while(!client.isGameOver())
         {
             client.checkMessages();
         }
@@ -86,9 +87,11 @@ public class R2D2GameClient implements ClientModel{
      */
     private void handleInfoMessage(InfoMessage message)
     {
+        System.out.println("INFO: " + message.isGameOver());
         if(message.isGameOver())
         {
             gui.displayMessage("Player " + message.getWinnerPlayer() + " is the winner!");
+            gameOver = true;
         } else {
             gui.displayMessage("It's Player " + message.getActivePlayer() + "'s turn");
         }
@@ -103,21 +106,29 @@ public class R2D2GameClient implements ClientModel{
         System.out.println("Client initalized with player id:" + player);
         
         // Initialize GUI
-        gui = new Gomoku(this);
+        gui = new R2D2ClientGUI(this, player);
         gui.displayMessage("Welcome to five in a row! You are player " + player + ".");
     }
 
 
     @Override
     public void requestMove(int x, int y) {
-        MoveMessage GuiMove = new MoveMessage(player, x, y);
-        server.sendMessage(GuiMove);
+        if(!isGameOver()) {
+            MoveMessage GuiMove = new MoveMessage(player, x, y);
+            server.sendMessage(GuiMove);
+        }
     }
 
     @Override
     public void sendChatMessage(String chat)
     {
-        ChatMessage message = new ChatMessage(player, chat);
-        server.sendMessage(message);
+        if(!isGameOver()) {
+            ChatMessage message = new ChatMessage(player, chat);
+            server.sendMessage(message);
+        }
+    }
+
+    private boolean isGameOver() {
+        return gameOver;
     }
 }

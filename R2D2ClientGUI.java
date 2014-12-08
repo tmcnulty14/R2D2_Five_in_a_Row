@@ -5,15 +5,19 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.BoxLayout;
 
-public class Gomoku extends JFrame implements ClientGUI {
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
-    private JButton btn;
-    private Button button;
-    private JTextArea textArea;
-    private R2D2GameClient client;
+public class R2D2ClientGUI extends JFrame implements ClientGUI {
+
+    private final JButton btn;
+    private final Button button;
+    private final JTextArea textArea;
+    private final R2D2ClientModel client;
+    private final SimpleDateFormat sdf;
     
-    public Gomoku(R2D2GameClient client) {
-        super("Gomoku");
+    public R2D2ClientGUI(R2D2ClientModel client, int player) {
+        super("Five in a row - Player " + player);
 
         this.client = client;
         
@@ -46,6 +50,10 @@ public class Gomoku extends JFrame implements ClientGUI {
 
         // Set the size of the size
         setSize(1000, 600);
+        
+        // Set up timestamp formatting
+        
+    	sdf = new SimpleDateFormat("HH:mm:ss");
     }
 
     @Override
@@ -55,8 +63,8 @@ public class Gomoku extends JFrame implements ClientGUI {
 
     @Override
     public void displayMessage(String message) {
-        message += "\n";
-        textArea.append(message);
+        Calendar cal = Calendar.getInstance();
+    	String time = sdf.format(cal.getTime());
+        textArea.insert(time + ": " + message + "\n", 0);
     }
-
 }

@@ -14,9 +14,9 @@ public class Button extends JPanel implements ActionListener{
 	
 	private final ArrayList<JButton> buttons=new ArrayList(30);
 	private ImageIcon X,O;
-        private final R2D2GameClient client;
+        private final R2D2ClientModel client;
 	
-	public Button(R2D2GameClient client) {
+	public Button(R2D2ClientModel client) {
             
                 this.client = client;
                 
