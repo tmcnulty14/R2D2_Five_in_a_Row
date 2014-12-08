@@ -1,3 +1,10 @@
+import java.io.*;
+
+/**
+ * The server class for the Five in a row game. This class handles
+ * connecting to clients and spawning game instances for each pair of clients.
+ * @author anthonymorla
+ */
 
 public class R2D2GameModel implements GameModel
 {
@@ -64,17 +71,17 @@ public class R2D2GameModel implements GameModel
 			// matchVal is the value to be matched 5 in a row uses passed index value
 			int matchVal = boardArray[x][y];
 			
-			//System.out.println("set marker called... match val is "+matchVal+".");
+			System.out.println("set marker called... match val is "+matchVal+".");
 			
 			// winner 0 = no winner, 1 = player one winner, 2 = player two winner
 			int vertCount = vertCheck(x, y, matchVal);
 			//int diagCount = diagCheck(x, y, matchVal);
-			//int horzCount = horzCheck(x, y, matchVal);
+			int horizCount = horizCheck(x, y, matchVal);
 			
 			//System.out.println("Checker vert: "+vertCount+" diag: "+diagCount+" horz: "+horzCount);
 			
 			// If any counts return 5 in a row, then return the match value (val of winner)
-			if(vertCount >= 5 )
+			if(vertCount > 4 || horizCount > 4)
 			{
 				return matchVal;
 			}
@@ -84,10 +91,9 @@ public class R2D2GameModel implements GameModel
 				return 0;
 			}
 		}
-
 		
 		/**
-		 * (1/3) Used for vertical +/- check */
+		 * (1/3) Used for vertical (y) check */
 		private int vertCheck(int x, int y, int matchVal)
 		{
 		    int count = 0; // running counter for checker
@@ -101,11 +107,8 @@ public class R2D2GameModel implements GameModel
 					count++;
 				}
 				else{
-					// did not find match stop if...
-					if(count >0)
-					{
-						flag = false;
-					}
+					// did not find match reset count
+					count = 0;
 				}
 				
 				if( count > 4 || y == 14)
@@ -123,50 +126,37 @@ public class R2D2GameModel implements GameModel
 		} // end of vertCheck
 		
 		/**
-		 * (2/3) Used for horizontal +/- check 
-		private int horzCheck(int x, int y, int matchVal)
+		 * (2/3) Used for horizontal (x) check */
+		private int horizCheck(int x, int y, int matchVal)
 		{
-		    int count = 0; // one since matchVal is already a match
-			boolean flag = true;
-			boolean flagPos = true;
-			int xCheck = x;
-			int yCheck = y;
+		    int count = 0; // running counter for checker
+			boolean flag = true; 
+			x = 0; // vertical check start y at 0 - x will not change
+			// check positive vertical values above starting point
 			
-			// check positive vertial values above starting point
 			while(flag)
 			{
-				if( boardArray[xCheck][yCheck] == matchVal){
+				if( boardArray[x][y] == matchVal){
 					count++;
-					xCheck--;
 				}
 				else{
-					// match not found/not consecutive stop search!!
+					// did not find match stop if...
+					count = 0;
+				}
+				
+				if( count > 4 || y == 14)
+				{
+					// if we find 5 in a row or we are at the end then stop...
 					flag = false;
 				}
-				// Stop once checked all!
-				if(yCheck < 0 )
-					flag = false;
+				
+				//keep checking
+				x++;
 			}
-			// reset variables
-			flag = true;
-			xCheck = x;
-			// check all negative vertical values below starting point
-			while(flag)
-			{
-				if( boardArray[xCheck][yCheck] == matchVal){
-					count++;
-					xCheck++;
-				}
-				else{
-					// match not found/not consecutive stop search!!
-					flagPos = false;
-				}
-				// OR  stop once checked all!
-				if(xCheck > 14 )
-					flagPos = false;
-			}
+			
 			return count;
-		} //end of horzCheck
+			
+		} // end of vertCheck
 		
 		/**
 		 * (3/3) Used for diagnal +/- check in both directions 
