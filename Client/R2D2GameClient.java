@@ -16,10 +16,12 @@ public class R2D2GameClient implements ClientModel{
     private R2D2Connection server;
     private boolean gameOver = false;
     
-    /*
-    *Main method calls constructor
-    *and initializes server connection
-    */
+    /**
+     * Calls constructor, sets up server connection, loops to check for messages
+     * until the game is over, and then closes the server connection.
+     * @param args
+     * @throws IOException 
+     */
     public static void main(String[] args) throws IOException 
     {
         R2D2GameClient client = new R2D2GameClient();
@@ -115,7 +117,11 @@ public class R2D2GameClient implements ClientModel{
         gui.displayMessage("Welcome to five in a row! You are player " + player + ".");
     }
 
-
+    /**
+     * Method called by the GUI to request a move from the server.
+     * @param x X coordinate of move
+     * @param y Y coordinate of move
+     */
     @Override
     public void requestMove(int x, int y) {
         if(!isGameOver()) {
@@ -124,6 +130,10 @@ public class R2D2GameClient implements ClientModel{
         }
     }
 
+    /**
+     * Method called by the GUI to send a chat message.
+     * @param chat The string to be sent.
+     */
     @Override
     public void sendChatMessage(String chat)
     {
@@ -133,10 +143,17 @@ public class R2D2GameClient implements ClientModel{
         }
     }
 
+    /**
+     * @return True if the client believes the game is over.
+     */
     private boolean isGameOver() {
         return gameOver;
     }
 
+    /**
+     * Closes the server connection.
+     * @throws IOException 
+     */
     private void close() throws IOException {
         server.close();
     }
