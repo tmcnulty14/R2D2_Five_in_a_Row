@@ -1,8 +1,11 @@
 package Client;
 
 import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -12,22 +15,29 @@ import javax.swing.BoxLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import javax.swing.JPanel;
 
 public class R2D2ClientGUI extends JFrame implements ClientGUI {
 
     private final JButton btn;
-    private final Button button;
+    private final ButtonPanel board;
     private final JTextArea textArea;
     private final JTextField textField;
     private final R2D2GameClient client;
-    private final SimpleDateFormat sdf;
+    private final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+    private final JPanel chatPane;
     
     public R2D2ClientGUI(R2D2GameClient client, int player) {
         super("Five in a row - Player " + player);
-
-        this.client = client;
         
+        // Initialize things.
+        this.client = client;
         btn = new JButton("Send");
+        board = new ButtonPanel(client);
+        textArea = new JTextArea();
+        textField = new JTextField();
+        chatPane = new JPanel();
+        // Make the text field send the text when the user clicks Send or presses enter.
         btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -35,31 +45,49 @@ public class R2D2ClientGUI extends JFrame implements ClientGUI {
                 textField.setText("");
             }
         });
-        button = new Button(client);
-        textArea = new JTextArea();
-        textField = new JTextField();
-
-        Dimension dim1 = getPreferredSize();
-        dim1.setSize(50, 120);
+        textField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    sendChatMessage(textField.getText());
+                    textField.setText("");
+                }
+            }
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
         
-        Dimension dim2 = getPreferredSize();
-        dim2.setSize(50, 80);
-
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        
+        // Configure and add the board.
+        board.setAlignmentX(CENTER_ALIGNMENT);
+        add(board);
+        
+        // Configure and add the chat pane.
+        chatPane.setLayout(new BoxLayout(chatPane, BoxLayout.X_AXIS));
+        Dimension dimChat = new Dimension(900, 20);
+        chatPane.setPreferredSize(dimChat);
+        chatPane.setMaximumSize(dimChat);
+        chatPane.setMinimumSize(dimChat);
+        textField.setAlignmentX(LEFT_ALIGNMENT);
+        chatPane.add(textField);
         btn.setAlignmentX(CENTER_ALIGNMENT);
-
-        button.setAlignmentX(CENTER_ALIGNMENT);
-        add(button);
-
-        textField.setPreferredSize(dim2);
-        add(textField);
-        add(btn);
+        chatPane.add(btn);
+        add(chatPane);
         
-        textArea.setPreferredSize(dim1);
-        add(new JScrollPane(textArea));
-        
-        
-        // Action to send messgaes back and forth
+        // Configure and add the notification text area.
+        Dimension dimScroll = new Dimension(900, 80);
+        textArea.setPreferredSize(new Dimension(800, 1200));
+        textArea.setMargin(new Insets(0, 10, 0, 0));
+        JScrollPane scroll = new JScrollPane(textArea);
+        scroll.setPreferredSize(dimScroll);
+        scroll.setMaximumSize(dimScroll);
+        scroll.setMinimumSize(dimScroll);
+        add(scroll);
         
         // Make frame visible
         setVisible(true);
@@ -69,18 +97,25 @@ public class R2D2ClientGUI extends JFrame implements ClientGUI {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Set the size of the size
-        setSize(1000, 600);
-        
-        // Set up timestamp formatting
-        
-    	sdf = new SimpleDateFormat("HH:mm:ss");
+        setSize(900, 580);
+    	
     }
 
+    /**
+     * Called by the game client to draw a piece on the board.
+     * @param x
+     * @param y
+     * @param player 
+     */
     @Override
     public void updateBoard(int x, int y, int player) {
-        button.updateBoard(x, y, player);
+        board.updateBoard(x, y, player);
     }
 
+    /**
+     * Called by the game client to display a String in the text area.
+     * @param message 
+     */
     @Override
     public void displayMessage(String message) {
         Calendar cal = Calendar.getInstance();
