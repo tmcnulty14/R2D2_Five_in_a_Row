@@ -3,9 +3,10 @@ package Server;
 import java.io.*;
 
 /**
- * The server class for the Five in a row game. This class handles
- * connecting to clients and spawning game instances for each pair of clients.
- * @author anthonymorla
+ * This game model class handles core game functions such as tracking
+ * current player, initializing the board array and storing, as well as 
+ * determining winning conditions and the associated winner
+ * @author AnthonyMorla
  */
 
 public class R2D2GameModel implements GameModel
