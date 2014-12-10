@@ -79,20 +79,10 @@ public class R2D2Connection implements Runnable {
         }
         return message;
     }
-    
-    public void close() {
-        running = false;
-        try {
-            input.close();
-            output.close();
-            socket.close();
-        } catch (IOException e) {
-            if(LOGGING && ERROR_LOGGING) {
-                System.out.println("Error when attempting to close connection to clients.");
-            }
-        }
-    }
 
+    /**
+     * Continuously pull messages out of the InputStream and into the message queue.
+     */
     @Override
     public void run() {
         running = true;
@@ -103,6 +93,23 @@ public class R2D2Connection implements Runnable {
                 if(LOGGING && ERROR_LOGGING) {
                     System.out.println("Error: Failed to pull messages over socket.");
                 }
+            }
+        }
+    }
+    
+    /**
+     * Closes socket IO streams and socket connection. Also sets running to false
+     * so that if this R2D2Connection has a thread running it will terminate.
+     */
+    public void close() {
+        running = false;
+        try {
+            input.close();
+            output.close();
+            socket.close();
+        } catch (IOException e) {
+            if(LOGGING && ERROR_LOGGING) {
+                System.out.println("Error when attempting to close connection.");
             }
         }
     }
