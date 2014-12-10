@@ -26,6 +26,7 @@ public class R2D2GameClient implements ClientModel{
     {
         R2D2GameClient client = new R2D2GameClient();
         
+        // Set the ip address to localhost, or to command line argument.
         String address = args.length > 0 ? args[0] : "localhost";
         int port = 18242;
         Socket s = new Socket(address, port);
