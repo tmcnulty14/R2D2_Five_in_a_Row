@@ -3,7 +3,7 @@ package Server;
 /**
  * The server class for the Five in a row game. This class handles
  * connecting to clients and spawning game instances for each pair of clients.
- * @author anthonymorla
+ * @author anthonymorl
  */
 
 public class R2D2GameModel implements GameModel
