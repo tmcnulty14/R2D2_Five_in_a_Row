@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * A message containing information about a move (player, x, y).
- * @author tmcnulty14
+ * @author tmcnulty
  */
 public class MoveMessage implements Message, Serializable {
     private static final int PRIORITY = 2;
@@ -38,6 +38,7 @@ public class MoveMessage implements Message, Serializable {
         return PRIORITY;
     }
     
+    @Override
     public String toString() {
         return "Messaging.MoveMessage" + playerId + ", " + moveX + ", " + moveY;
     }

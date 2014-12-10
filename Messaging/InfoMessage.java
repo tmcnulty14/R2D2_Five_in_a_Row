@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * A message containing information about the current game state.
- * @author tmcnulty14
+ * @author tmcnulty
  */
 public class InfoMessage implements Message, Serializable {
     private static final int PRIORITY = 3;

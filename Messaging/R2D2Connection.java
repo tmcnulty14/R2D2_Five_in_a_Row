@@ -8,6 +8,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 /**
 * A class which handles sending and reading messages using a Socket connection.
 * This class is used by both the client and server programs.
+* @author tmcnulty
 */
 public class R2D2Connection implements Runnable {
     private final Socket socket;

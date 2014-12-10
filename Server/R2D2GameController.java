@@ -8,7 +8,7 @@ import java.net.*;
  * This class handles game flow and communications on the server side.
  * It uses a GameModel to take care of game logic.
  * 
- * @author tmcnulty14
+ * @author tmcnulty
  */
 public class R2D2GameController implements Runnable {
     private final GameModel model;
@@ -33,16 +33,19 @@ public class R2D2GameController implements Runnable {
         R2D2Connection client1;
         R2D2Connection client2;
         try {
+            // Creates the client connections
             client1 = new R2D2Connection(c1);
             client2 = new R2D2Connection(c2);
             
+            // Start the connection threads to pull new messages off the socket.
             new Thread(client1).start();
             new Thread(client2).start();
             
+            // Store the client connections
             clients[0] = client1;
             clients[1] = client2;
         } catch (IOException e) {
-            System.out.println("Error when setting client sockets.");
+            System.out.println("GameController: Error when setting client sockets.");
         }
         System.out.println("GameController: Sockets assigned.");
     }
@@ -65,14 +68,14 @@ public class R2D2GameController implements Runnable {
         // Loop as long as nobody has won the game.
         // Each iteration of the loop is a new turn.
         while(winner == 0) {
-            doneTurn = false;
+            doneTurn = false; // This will be set to true if the model accepts a move request
             int activePlayer = model.getActivePlayer();
             // Tell the clients whose turn it is.
             for(R2D2Connection client : clients) {
                 client.sendMessage(InfoMessage.newTurn(activePlayer));
             }
             
-            // Handle messages in a loop until the turn is over.
+            // Handle messages from clients in a loop until the turn is over.
             while(!doneTurn) {
                 // Checks to see if each client has sent a message.
                 for(R2D2Connection client : clients) {
@@ -86,6 +89,7 @@ public class R2D2GameController implements Runnable {
             winner = model.checkStatus();
         }
         
+        // Close the client connections (streams and sockets).
         for(R2D2Connection client : clients) {
             client.sendMessage(InfoMessage.gameOver(winner));
             client.close();
@@ -114,7 +118,7 @@ public class R2D2GameController implements Runnable {
      * @param message A MoveMessage object.
      */
     private void handleMoveMessage(MoveMessage message) {
-        // Attempt to mark the move on the model. If it works, the turn is done.
+        // Attempt to mark the move in the model. If it works, the turn is done.
         if(model.setMarker(message.getX(), message.getY(), message.getSourceId())) {
             doneTurn = true;
             // Send the recorded move on to the clients to be drawn.
@@ -129,7 +133,7 @@ public class R2D2GameController implements Runnable {
      * @param message A ChatMessage object.
      */
     private void handleChatMessage(ChatMessage message) {
-        // Send the chat message to both players.
+        // Send the chat message to both players so it appears in their logs.
         for(R2D2Connection client : clients) {
             client.sendMessage(message);
         }

@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * A message containing a single line of chat message.
- * @author tmcnulty14
+ * @author tmcnulty
  */
 public class ChatMessage implements Message, Serializable {
     private static final int PRIORITY = 1;

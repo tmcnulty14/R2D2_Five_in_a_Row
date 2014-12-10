@@ -6,26 +6,28 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.BoxLayout;
+import javax.swing.JPanel;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import javax.swing.JPanel;
+
 
 public class R2D2ClientGUI extends JFrame implements ClientGUI {
-
     private final JButton btn;
     private final ButtonPanel board;
     private final JTextArea textArea;
     private final JTextField textField;
+    private final JPanel chatPane;
+    
     private final R2D2GameClient client;
     private final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-    private final JPanel chatPane;
     
     public R2D2ClientGUI(R2D2GameClient client, int player) {
         super("Five in a row - Player " + player);
@@ -37,6 +39,8 @@ public class R2D2ClientGUI extends JFrame implements ClientGUI {
         textArea = new JTextArea();
         textField = new JTextField();
         chatPane = new JPanel();
+        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        
         // Make the text field send the text when the user clicks Send or presses enter.
         btn.addActionListener(new ActionListener() {
             @Override
@@ -60,8 +64,6 @@ public class R2D2ClientGUI extends JFrame implements ClientGUI {
             public void keyReleased(KeyEvent e) {
             }
         });
-        
-        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         
         // Configure and add the board.
         board.setAlignmentX(CENTER_ALIGNMENT);
@@ -92,11 +94,10 @@ public class R2D2ClientGUI extends JFrame implements ClientGUI {
         // Make frame visible
         setVisible(true);
 
-        // This kills the background process when
-        //  the users hits the red X box
+        // This kills the background process when the user closes the window
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Set the size of the size
+        // Set the size of the frame
         setSize(900, 580);
     	
     }
@@ -123,6 +124,10 @@ public class R2D2ClientGUI extends JFrame implements ClientGUI {
         textArea.insert(time + ": " + message + "\n", 0);
     }
     
+    /**
+     * Private helper method for sending a chat message.
+     * @param chat 
+     */
     private void sendChatMessage(String chat) {
         client.sendChatMessage(chat);
     }

@@ -1,17 +1,13 @@
 package Server;
 
-import java.io.*;
-
 /**
- * This game model class handles core game functions such as tracking
- * current player, initializing the board array and storing, as well as 
- * determining winning conditions and the associated winner
- * @author AnthonyMorla
+ * The server class for the Five in a row game. This class handles
+ * connecting to clients and spawning game instances for each pair of clients.
+ * @author anthonymorla
  */
 
 public class R2D2GameModel implements GameModel
 {
-
     private final int[][] boardArray = new int[15][15];
     private int gameWinner = 0;
     private int currentPlayer = 1; 
@@ -19,7 +15,9 @@ public class R2D2GameModel implements GameModel
 
     @Override
     /**
-     * Sets marker in array return boolean if valid move */
+     * If the move is valid, sets the marker in the array and returns true.
+     * Otherwise, returns false.
+     **/
     public boolean setMarker(int x, int y, int value)
     {
         int curVal = boardArray[x][y];	
@@ -40,7 +38,7 @@ public class R2D2GameModel implements GameModel
 
     @Override
     /**
-     * Returns the game winner int */
+     * Returns the game winner int. 0 = game ongoing, 1 or 2 = winner */
     public int checkStatus(){
         return gameWinner;
     }
@@ -54,14 +52,14 @@ public class R2D2GameModel implements GameModel
 
 
     /**
-     * Methods below updates the current player int variable */
+     * Updates current player variable. */
     private void updatePlayer() {
         if( currentPlayer == 1)
         {
-                currentPlayer = 2;
+            currentPlayer = 2;
         }
         else if( currentPlayer == 2) {
-                currentPlayer = 1;
+            currentPlayer = 1;
         }
     }
 
@@ -77,8 +75,8 @@ public class R2D2GameModel implements GameModel
 
         // winner 0 = no winner, 1 = player one winner, 2 = player two winner
         int vertCount = vertCheck(x, y, matchVal);
-        int diagCount = diagCheck(x, y, matchVal);
         int horizCount = horizCheck(x, y, matchVal);
+        int diagCount = diagCheck(x, y, matchVal);
 
         System.out.println("Checker vert: "+vertCount+" diag: "+diagCount+" horz: "+horizCount);
 
@@ -157,10 +155,10 @@ public class R2D2GameModel implements GameModel
 
         return count;
 
-    } // end of vertCheck
+    } // end of horizCheck
 
     /**
-     * (2/3) Used for horizontal (x) check */
+     * (3/3) Used for diagonal (x/y) check */
     private int diagCheck(int x, int y, int matchVal)
     {
         int count = 0; // running counter for checker
@@ -243,7 +241,7 @@ public class R2D2GameModel implements GameModel
         }
 
         return count;
-    } // end of vertCheck
+    } // end of diagCheck
 		
 } // end of class
 	
@@ -258,16 +256,6 @@ public class R2D2GameModel implements GameModel
 
 * At this location its current state will be represented by an integer:
 *  0 = no marker, 1 = player one's marker, 2= player's two marker
-
-* setMarker(String pos, int val) will set the given square to the given value as long as there is no conflict - returns bool 
-* will return false if spot is already being used/marked example: setMarker("12-13", 1) player one at 12 (x) 13(y)
-
-* checkStatus will be called after every setMarker call to see if there is a winner returns int (0 no winner, 1 player one wins, 2...)
-* this method will use a loop to cycle through each row of the baord
-* conditions to add point to p1 or p2 scores will include:
-* if player has marker in square add one, if previous position x axis +/- 1 has marker OR prev. position +/- y axis has marker for that player
-* check immediate area then follow if x follow x if y follow y if diag follow diag
-
 *********************************************************/	
 	
 // end of file	

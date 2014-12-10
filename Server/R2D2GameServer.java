@@ -7,7 +7,7 @@ import java.util.Random;
 /**
  * The server class for the Five in a row game. This class handles
  * connecting to clients and spawning game instances for each pair of clients.
- * @author mcnultyt
+ * @author tmcnulty
  */
 public class R2D2GameServer {
     private static Random r;
